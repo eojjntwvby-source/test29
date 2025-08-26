@@ -21,7 +21,7 @@ enum MileageUnit: string
     {
         return match ($this) {
             self::KILOMETERS => 1.0,
-            self::MILES => 0.621371,
+            self::MILES => 1.609344, // 1 mile = 1.609344 km
         };
     }
 

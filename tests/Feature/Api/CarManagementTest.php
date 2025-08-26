@@ -53,8 +53,8 @@ class CarManagementTest extends TestCase
                 'data' => [
                     '*' => [
                         'id',
-                        'brand_id',
-                        'car_model_id',
+                        'brand' => ['id', 'name'],
+                        'car_model' => ['id', 'name'],
                         'user_id',
                         'year',
                         'mileage',

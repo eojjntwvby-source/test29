@@ -69,6 +69,21 @@ composer-update: ## Update composer dependencies
 key-generate: ## Generate application key
 	docker-compose exec app php artisan key:generate
 
+user: ## Create test user and show access token
+	@echo "Creating test user..."
+	@docker-compose exec -T app php artisan tinker --execute="\
+	\$$user = \App\Models\User::firstOrCreate([\
+		'email' => 'test@example.com'\
+	], [\
+		'name' => 'Test User',\
+		'password' => \Hash::make('password123')\
+	]);\
+	\$$token = \$$user->createToken('API Token')->plainTextToken;\
+	echo 'User created successfully!' . PHP_EOL;\
+	echo 'Email: test@example.com' . PHP_EOL;\
+	echo 'Password: password123' . PHP_EOL;\
+	echo 'Access Token: ' . \$$token . PHP_EOL;"
+
 # Cache commands
 cache-clear: ## Clear all caches
 	docker-compose exec app php artisan optimize:clear

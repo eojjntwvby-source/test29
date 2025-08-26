@@ -37,7 +37,8 @@ final class AuthController extends Controller
                     'name' => $user->name,
                     'email' => $user->email,
                 ],
-                'token' => $token,
+                'access_token' => $token,
+                'token_type' => 'Bearer',
             ]
         ], 201);
     }
@@ -67,7 +68,8 @@ final class AuthController extends Controller
                     'name' => $user->name,
                     'email' => $user->email,
                 ],
-                'token' => $token,
+                'access_token' => $token,
+                'token_type' => 'Bearer',
             ]
         ]);
     }

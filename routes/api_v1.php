@@ -16,7 +16,7 @@ Route::prefix('v1')->group(function () {
     // Protected routes
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout']);
-        Route::get('/user', [AuthController::class, 'user']);
+        Route::get('/user', [AuthController::class, 'profile']);
 
         // Cars CRUD (only for authenticated users)
         Route::apiResource('cars', CarController::class);
