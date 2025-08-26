@@ -69,6 +69,9 @@ composer-update: ## Update composer dependencies
 key-generate: ## Generate application key
 	docker-compose exec app php artisan key:generate
 
+db_seed: ## seed data
+	docker-compose exec app php artisan db:seed
+
 user: ## Create test user and show access token
 	@echo "Creating test user..."
 	@docker-compose exec -T app php artisan tinker --execute="\

@@ -25,24 +25,12 @@ final class CarController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/v1/cars",
+     *     path="/v1/cars",
      *     tags={"Cars"},
-     *     summary="Get user's cars",
-     *     description="Returns a list of cars belonging to the authenticated user",
+     *     summary="Список автомобилей пользователя",
      *     security={{"bearerAuth":{}}},
-     *     @OA\Response(
-     *         response=200,
-     *         description="Successful operation",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="status", type="string", example="success"),
-     *             @OA\Property(
-     *                 property="data",
-     *                 type="array",
-     *                 @OA\Items(ref="#/components/schemas/Car")
-     *             )
-     *         )
-     *     ),
-     *     @OA\Response(response=401, description="Unauthenticated")
+     *     @OA\Response(response=200, description="Список автомобилей"),
+     *     @OA\Response(response=401, description="Не авторизован")
      * )
      */
     public function index(): JsonResponse
@@ -57,25 +45,13 @@ final class CarController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/v1/cars",
+     *     path="/v1/cars",
      *     tags={"Cars"},
-     *     summary="Create a new car",
-     *     description="Creates a new car for the authenticated user (asynchronous processing)",
+     *     summary="Создание автомобиля",
      *     security={{"bearerAuth":{}}},
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(ref="#/components/schemas/CreateCarRequest")
-     *     ),
-     *     @OA\Response(
-     *         response=202,
-     *         description="Car creation queued for processing",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="status", type="string", example="success"),
-     *             @OA\Property(property="message", type="string", example="Car creation has been queued for processing")
-     *         )
-     *     ),
-     *     @OA\Response(response=422, description="Validation error"),
-     *     @OA\Response(response=401, description="Unauthenticated")
+     *     @OA\Response(response=202, description="Автомобиль добавлен в очередь"),
+     *     @OA\Response(response=422, description="Ошибка валидации"),
+     *     @OA\Response(response=401, description="Не авторизован")
      * )
      */
     public function store(Request $request): JsonResponse
@@ -114,14 +90,7 @@ final class CarController extends Controller
      *         required=true,
      *         @OA\Schema(type="integer")
      *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Successful operation",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="status", type="string", example="success"),
-     *             @OA\Property(property="data", ref="#/components/schemas/Car")
-     *         )
-     *     ),
+     *     @OA\Response(response=200, description="Данные автомобиля"),
      *     @OA\Response(response=404, description="Car not found or access denied"),
      *     @OA\Response(response=401, description="Unauthenticated")
      * )
@@ -157,18 +126,7 @@ final class CarController extends Controller
      *         required=true,
      *         @OA\Schema(type="integer")
      *     ),
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(ref="#/components/schemas/UpdateCarRequest")
-     *     ),
-     *     @OA\Response(
-     *         response=202,
-     *         description="Car update queued for processing",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="status", type="string", example="success"),
-     *             @OA\Property(property="message", type="string", example="Car update has been queued for processing")
-     *         )
-     *     ),
+     *     @OA\Response(response=202, description="Обновление добавлено в очередь"),
      *     @OA\Response(response=403, description="Access denied"),
      *     @OA\Response(response=404, description="Car not found"),
      *     @OA\Response(response=422, description="Validation error"),

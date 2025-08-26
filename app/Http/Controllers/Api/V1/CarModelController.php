@@ -18,7 +18,7 @@ final class CarModelController extends Controller
 {
     /**
      * @OA\Get(
-     *     path="/api/v1/car-models",
+     *     path="/v1/car-models",
      *     tags={"Car Models"},
      *     summary="Get all car models",
      *     description="Returns a list of car models, optionally filtered by brand",

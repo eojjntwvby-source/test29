@@ -16,7 +16,7 @@ final class BrandController extends Controller
 {
     /**
      * @OA\Get(
-     *     path="/api/v1/brands",
+     *     path="/v1/brands",
      *     tags={"Brands"},
      *     summary="Get all car brands",
      *     description="Returns a list of all available car brands",
