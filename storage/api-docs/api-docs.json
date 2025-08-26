@@ -1,0 +1,720 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Car Management API",
+        "description": "Enterprise Car Management API with modern PHP 8.3 features",
+        "contact": {
+            "name": "API Support",
+            "email": "api@car-management.com"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        },
+        "version": "2.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8080/api",
+            "description": "Development server"
+        },
+        {
+            "url": "https://api.car-management.com/api",
+            "description": "Production server"
+        }
+    ],
+    "paths": {
+        "/api/v1/brands": {
+            "get": {
+                "tags": [
+                    "Brands"
+                ],
+                "summary": "Get all car brands",
+                "description": "Returns a list of all available car brands",
+                "operationId": "265f173d55c77d2ffffe46be4ba57fa8",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Brand"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/cars": {
+            "get": {
+                "tags": [
+                    "Cars"
+                ],
+                "summary": "Get user's cars",
+                "description": "Returns a list of cars belonging to the authenticated user",
+                "operationId": "55c3910eab5686af973fac0cedfda6bf",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Car"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Cars"
+                ],
+                "summary": "Create a new car",
+                "description": "Creates a new car for the authenticated user (asynchronous processing)",
+                "operationId": "0fa306f685c17fa2f4eaa484f0cef8e4",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateCarRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "202": {
+                        "description": "Car creation queued for processing",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Car creation has been queued for processing"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/cars/{id}": {
+            "get": {
+                "tags": [
+                    "Cars"
+                ],
+                "summary": "Get a specific car",
+                "description": "Returns details of a specific car owned by the authenticated user",
+                "operationId": "e147c89a84f4926f55e7e44096976ebf",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Car ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Car"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Car not found or access denied"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Cars"
+                ],
+                "summary": "Update a car",
+                "description": "Updates a car owned by the authenticated user (asynchronous processing)",
+                "operationId": "caba82d6d99f46b9ade75a7ceb24e2c4",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Car ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateCarRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "202": {
+                        "description": "Car update queued for processing",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Car update has been queued for processing"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Access denied"
+                    },
+                    "404": {
+                        "description": "Car not found"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Cars"
+                ],
+                "summary": "Delete a car",
+                "description": "Deletes a car owned by the authenticated user",
+                "operationId": "9f5e5174e79a1192b850add375857e7f",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Car ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Car deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Car deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Access denied"
+                    },
+                    "404": {
+                        "description": "Car not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/car-models": {
+            "get": {
+                "tags": [
+                    "Car Models"
+                ],
+                "summary": "Get all car models",
+                "description": "Returns a list of car models, optionally filtered by brand",
+                "operationId": "57dda9a150b63b7fe69cfdeb994aa4d1",
+                "parameters": [
+                    {
+                        "name": "brand_id",
+                        "in": "query",
+                        "description": "Filter by brand ID",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/CarModel"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Color": {
+                "title": "Color",
+                "description": "Car color",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Red"
+                    },
+                    "hex_code": {
+                        "type": "string",
+                        "example": "#FF0000"
+                    },
+                    "rgb_code": {
+                        "type": "string",
+                        "example": "255,0,0"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "CreateCarRequest": {
+                "title": "Create Car Request",
+                "description": "Request body for creating a car",
+                "required": [
+                    "brand_id",
+                    "car_model_id"
+                ],
+                "properties": {
+                    "brand_id": {
+                        "description": "Brand ID",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "car_model_id": {
+                        "description": "Car model ID",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "color_id": {
+                        "description": "Color ID",
+                        "type": "integer",
+                        "example": 1,
+                        "nullable": true
+                    },
+                    "year": {
+                        "description": "Manufacturing year",
+                        "type": "integer",
+                        "example": 2020,
+                        "nullable": true
+                    },
+                    "mileage": {
+                        "description": "Mileage information",
+                        "properties": {
+                            "value": {
+                                "description": "Mileage value",
+                                "type": "number",
+                                "format": "float",
+                                "example": 50000.5
+                            },
+                            "unit": {
+                                "description": "Mileage unit",
+                                "type": "string",
+                                "enum": [
+                                    "km",
+                                    "mi"
+                                ],
+                                "example": "km"
+                            }
+                        },
+                        "type": "object",
+                        "nullable": true
+                    },
+                    "color": {
+                        "description": "Legacy color field",
+                        "type": "string",
+                        "example": "Red",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateCarRequest": {
+                "title": "Update Car Request",
+                "description": "Request body for updating a car",
+                "properties": {
+                    "brand_id": {
+                        "description": "Brand ID",
+                        "type": "integer",
+                        "example": 1,
+                        "nullable": true
+                    },
+                    "car_model_id": {
+                        "description": "Car model ID",
+                        "type": "integer",
+                        "example": 1,
+                        "nullable": true
+                    },
+                    "color_id": {
+                        "description": "Color ID",
+                        "type": "integer",
+                        "example": 1,
+                        "nullable": true
+                    },
+                    "year": {
+                        "description": "Manufacturing year",
+                        "type": "integer",
+                        "example": 2021,
+                        "nullable": true
+                    },
+                    "mileage": {
+                        "description": "Mileage information",
+                        "properties": {
+                            "value": {
+                                "description": "Mileage value",
+                                "type": "number",
+                                "format": "float",
+                                "example": 30000
+                            },
+                            "unit": {
+                                "description": "Mileage unit",
+                                "type": "string",
+                                "enum": [
+                                    "km",
+                                    "mi"
+                                ],
+                                "example": "mi"
+                            }
+                        },
+                        "type": "object",
+                        "nullable": true
+                    },
+                    "color": {
+                        "description": "Legacy color field",
+                        "type": "string",
+                        "example": "Blue",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "ErrorResponse": {
+                "title": "Error Response",
+                "description": "Standard error response",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "example": "error"
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "Error description"
+                    },
+                    "errors": {
+                        "description": "Validation errors (422 responses only)",
+                        "type": "object",
+                        "nullable": true,
+                        "additionalProperties": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "Brand": {
+                "title": "Brand",
+                "description": "Car brand model",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Toyota"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "CarModel": {
+                "title": "Car Model",
+                "description": "Car model",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Camry"
+                    },
+                    "brand_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "brand": {
+                        "$ref": "#/components/schemas/Brand"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "Car": {
+                "title": "Car",
+                "description": "Car model",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "brand_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "car_model_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "color_id": {
+                        "type": "integer",
+                        "example": 1,
+                        "nullable": true
+                    },
+                    "user_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "year": {
+                        "type": "integer",
+                        "example": 2020,
+                        "nullable": true
+                    },
+                    "mileage": {
+                        "properties": {
+                            "value": {
+                                "type": "number",
+                                "format": "float",
+                                "example": 50000.5
+                            },
+                            "unit": {
+                                "type": "string",
+                                "enum": [
+                                    "km",
+                                    "mi"
+                                ],
+                                "example": "km"
+                            },
+                            "display": {
+                                "type": "string",
+                                "example": "50000.50 km"
+                            },
+                            "kilometers": {
+                                "type": "number",
+                                "format": "float",
+                                "example": 50000.5
+                            },
+                            "miles": {
+                                "type": "number",
+                                "format": "float",
+                                "example": 31068.56
+                            }
+                        },
+                        "type": "object",
+                        "nullable": true
+                    },
+                    "color": {
+                        "type": "string",
+                        "example": "Red",
+                        "nullable": true
+                    },
+                    "brand": {
+                        "$ref": "#/components/schemas/Brand"
+                    },
+                    "model": {
+                        "$ref": "#/components/schemas/CarModel"
+                    },
+                    "color_relation": {
+                        "$ref": "#/components/schemas/Color"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "description": "Enter token in format: Bearer <token>",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Brands",
+            "description": "Car brands management"
+        },
+        {
+            "name": "Cars",
+            "description": "Car management for authenticated users"
+        },
+        {
+            "name": "Car Models",
+            "description": "Car models management"
+        }
+    ]
+}
